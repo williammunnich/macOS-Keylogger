@@ -3,3 +3,8 @@
 /keylogger/keylogger.xcodeproj
 keys/
 project.pbxproj/
+keylogger/Product/keylogger_b1.xctestproducts/Binaries/0/Debug/keylogger
+keylogger/Product/keylogger_b1.xctestproducts/Info.plist
+keylogger/Product/keylogger_b1.xctestproducts/Tests/0/Debug
+keylogger/Product/keylogger_b1.xctestproducts/Tests/0/keylogger.xctestrun
+keylogger/.DS_Store
